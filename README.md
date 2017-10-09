@@ -18,13 +18,12 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image2]: ./examples/center_2017_10_07_00_30_50_845.jpg "Normal Image"
+[image3]: ./examples/center_2017_10_07_00_30_32_338.jpg "Recovery Image"
+[image4]: ./examples/center_2017_10_07_00_32_53_483.jpg "Recovery Image"
+[image5]: ./examples/center_2017_10_07_00_33_16_514.jpg "Recovery Image"
+[image6]: ./examples/center_2017_10_07_00_33_16_409.jpg "Normal Image"
+
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -136,6 +135,8 @@ Third attempt -
 Train on 24219 samples, validate on 6055 samples
 Epoch 1/10
 24219/24219 [==============================] - 49s - loss: 3.3275 - val_loss: 3.2934
+...
+...
 ```
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
@@ -162,28 +163,22 @@ model.add(Dense(num_classes))
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I first recorded four laps on track one using center lane driving. Here is an example image of center lane driving:
 
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to drift back to center of the lane. These images show what a recovery looks around bridge, red colored shoulder and near water.
 
 ![alt text][image3]
 ![alt text][image4]
 ![alt text][image5]
 
-Then I repeated this process on track two in order to get more data points.
+Then I repeated this process on track two in order to get more data points. I couldn't finish one lap driving on track two. It was very difficult to drive. So, I got only partial track's data.
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+To augment the data sat, I also flipped images and angles thinking that this would increase the data set and provide more generelization. 
 
-![alt text][image6]
-![alt text][image7]
+After the collection process, I had 20203 number of data points. I then preprocessed this data by using generator.
 
-Etc ....
+I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-After the collection process, I had 20203 number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 3 as evidenced by getting near 0.00369 training loss and 0.00356 validation loss. I used an adam optimizer so that manually training the learning rate wasn't necessary.
