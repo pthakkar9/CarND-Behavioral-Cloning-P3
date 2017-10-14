@@ -4,6 +4,24 @@
 
 ### This is the project writeup. [Instructions](Instructions.md) are here. Project's expectations are called rubic points and they are [here](https://review.udacity.com/#!/rubrics/432/view).
 
+See how model-4.2 drives on [track 2](https://youtu.be/Fz2WwQxrifo) or see [driver's view](https://youtu.be/4UF54O0kL4s) created by drive.py
+
+See how model-3.4a drives on [track 1](https://youtu.be/wIPkZwhLO9o) or see [driver's view](https://youtu.be/kE68FkYNxZk) created by drive.py
+
+Both of the models are available [here](https://drive.google.com/drive/folders/0B2wt3poVYbAYTUZFcURKOEVuMms?usp=sharing).
+
+**Things I changed after getting review comments**
+
+* Added dropout of 0.7 just before fully connected layer of 10
+* Slightly changed architecture by removing fully connected layer of 1164 neurons
+* Switched back and forth between keras versions to see if it makes any difference
+* model-3.4a is on lower version of keras and model-4.2 is on higher
+* I know the project requirement was to drive on only track 1... and in order to make it outstanding, same model should be driving car on track 2.
+* I couldn't achive outstanding requirement but I was able to produce model that drives flawlessly on track 2 only (model-4.2) 
+* Tried converting all images to YUV color space, couldn't see any improvements
+* Tried various probabilities of dropout, and placed drouput at many different places. Finally, settled on dropout with 0.7 keep probability just before fully connected layer of 10
+* Added a few more data points and new number is 26794, up from old number of 20203 data points. 
+
 ---
 
 **Behavioral Cloning Project**
@@ -37,16 +55,18 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * lib.py containing functions to read log file & generate test and validation data
 * drive.py for driving the car in autonomous mode
-* model10.h5 containing a trained convolution neural network 
+* model-3.4a.h5 containing a trained convolution neural network; it drives perfectly on track 1
+* model-4.2.h5 containing a trained convolution neural network; it drives perfectly on track 2
 * README.md (this file) summarizing the results
-* Video of the simultation is [here](https://youtu.be/yJ-d0NE3sfQ)
+* Video of the simultations are here [track 2 aerial view](https://youtu.be/Fz2WwQxrifo) or [track 2 driver's view](https://youtu.be/4UF54O0kL4s) & [track 1 aerial view](https://youtu.be/wIPkZwhLO9o) or [track 1 driver's view](https://youtu.be/kE68FkYNxZk) 
 
 #### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
 ```sh
-python drive.py model10.h5
+python drive.py model-3.4a.h5
+
+python drive.py model-4.2.h5
 ```
-You can also [watch](https://youtu.be/yJ-d0NE3sfQ) first person's view of what it looks like to drive around one and half laps. 
 
 #### 3. Submission code is usable and readable
 
@@ -54,7 +74,7 @@ Pipeline was built with "trial & error" process. I first built the neural networ
 
 I then switched to [NVIDIA's architecture](https://devblogs.nvidia.com/parallelforall/wp-content/uploads/2016/08/cnn-architecture-768x1095.png) and I was able to train network faster with the same data. Model generated was about 4MB... less than 1% of the size compared to LeNet.
 
-I also learned that training network with "more" data is not always a good idea. I kept on adding more and more data to generate better model. Finally, model was able to drive car multiple laps (actually indefinetely) with about 80,000 images including center, left, right and flipped images (20,000 original) but when I added more data, model actually performed worse. So, I came back to the optimal size of the training data and it now works like a charm.
+I also learned that training network with "more" data is not always a good idea. I kept on adding more and more data to generate better model. Finally, model was able to drive car multiple laps (actually indefinetely) with about 80,000 images including center, left, right and flipped images (20,000 original) but when I added more data, model actually performed worse. So, I came back to the optimal size of the training data and it now works like a charm. *EDIT* - Current data count is 26794; See comments on the top of the page for edits done after review.
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
@@ -94,7 +114,7 @@ The model was trained and validated on different data sets to ensure that the mo
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 81).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 84).
 
 #### 4. Appropriate training data
 
@@ -115,9 +135,8 @@ The overall strategy for deriving a model architecture was to -
 * It took me about 17 attempts to come to the final model (model10.h5) that I am submitting.
 * In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. 
 * I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-* To combat the overfitting, I modified the model and gathered more data. I also learned that training network with "more" data is not always a good idea. I kept on adding more and more data to generate better model. Finally, model was able to drive car multiple laps (actually indefinetely) with about 80,000 images including center, left, right and flipped images (20,000 original) but when I added more data, model actually performed worse. So, I came back to the optimal size of the training data and it now works like a charm.
-
-* Few first attempts *
+* To combat the overfitting, I modified the model and gathered more data. I also learned that training network with "more" data is not always a good idea. I kept on adding more and more data to generate better model. Finally, model was able to drive car multiple laps (actually indefinetely) with about 80,000 images including center, left, right and flipped images (20,000 original) but when I added more data, model actually performed worse. So, I came back to the optimal size of the training data and it now works like a charm. *EDIT* - Current data count is 26794; See comments on the top of the page for edits done after review.
+* Few first attempts
 
 First attempt - 
 
@@ -139,6 +158,16 @@ Epoch 1/10
 ...
 ```
 
+One of the late attempts (33rd) - 
+
+```
+Train on 85740 samples, validate on 21436 samples
+Epoch 1/5
+146758/146758 [==============================] - 341s - loss: 0.0667 - val_loss: 0.0573
+...
+...
+```
+
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
 #### 2. Final Model Architecture
@@ -148,7 +177,7 @@ The final model architecture (model.py lines 50-101) consisted of a convolution 
 ```sh
 model = Sequential()
 model.add(Lambda(lambda x: (x/255) - 0.5, input_shape=input_shape))
-model.add(Cropping2D(cropping=((70, 25), (0, 0)))) # 70 rows pixels from the top, 25 from bottom, 0 from left & right 
+model.add(Cropping2D(cropping=((70, 25), (0, 0)))) # 70 rows pixels from the top, 25 from bottom, 15 from left & right 
 model.add(Conv2D(24, 5, 5, subsample=(2,2), activation='relu'))
 model.add(Conv2D(36, 5, 5, subsample=(2,2), activation='relu'))
 model.add(Conv2D(48, 5, 5, subsample=(2,2), activation='relu'))
@@ -157,6 +186,7 @@ model.add(Conv2D(64, 3, 3, activation='relu'))
 model.add(Flatten())
 model.add(Dense(100))
 model.add(Dense(50))
+model.add(Dropout(keep_prob))
 model.add(Dense(10))
 model.add(Dense(num_classes))
 ```

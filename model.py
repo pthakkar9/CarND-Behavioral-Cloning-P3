@@ -7,7 +7,7 @@ from lib import data_generator, read_log_file
 
 import csv
 # Correction parameter for left and right image correction
-correction = 0.2
+correction = 0.3
 
 log_file = "data/driving_log.csv" # Path to simulator driving log file
 log_data = read_log_file(log_file, correction) # List to contain all driving log data, row by row
@@ -40,7 +40,8 @@ from keras import backend as K
 # model.add(Dense(1))
 
 num_classes = 1
-epochs = 3
+epochs = 5
+keep_prob = 0.7
 
 # input image dimensions
 img_rows, img_cols, img_channels = 160, 320, 3
@@ -49,15 +50,17 @@ input_shape = (img_rows, img_cols, img_channels)
 # NVIDIA-like implementation
 model = Sequential()
 model.add(Lambda(lambda x: (x/255) - 0.5, input_shape=input_shape))
-model.add(Cropping2D(cropping=((70, 25), (0, 0)))) # 70 rows pixels from the top, 25 from bottom, 0 from left & right 
+model.add(Cropping2D(cropping=((70, 25), (0, 0)))) # 70 rows pixels from the top, 25 from bottom, 15 from left & right 
 model.add(Conv2D(24, 5, 5, subsample=(2,2), activation='relu'))
 model.add(Conv2D(36, 5, 5, subsample=(2,2), activation='relu'))
 model.add(Conv2D(48, 5, 5, subsample=(2,2), activation='relu'))
 model.add(Conv2D(64, 3, 3, activation='relu'))
 model.add(Conv2D(64, 3, 3, activation='relu'))
 model.add(Flatten())
+# model.add(Dense(1164))
 model.add(Dense(100))
 model.add(Dense(50))
+model.add(Dropout(keep_prob))
 model.add(Dense(10))
 model.add(Dense(num_classes))
 

@@ -54,8 +54,10 @@ def data_generator(log_data, batch_size=32):
 			for row in batch:
 
 				image = cv2.imread(row[0])
+				# YUV color space is advised to be used in NVidia paper
+				# image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
 
-				if (row[1] == "flip"):
+				if (row[1] == "flip"):					
 					feature.append(np.fliplr(image))
 				else:
 					feature.append(image)
@@ -67,3 +69,33 @@ def data_generator(log_data, batch_size=32):
 			y_train = np.array(label)
 
 			yield sklearn.utils.shuffle(X_train, y_train)
+
+
+
+# import matplotlib.pyplot as plt
+# import matplotlib.image as mpimg
+# import numpy as np
+
+# img = mpimg.imread("data/IMG/center_2016_12_01_13_30_48_287.jpg")
+# imgplot = plt.imshow(img)
+# plt.show()
+
+# cropped = img[61:140, :]
+# imgplot = plt.imshow(cropped)
+# plt.show()
+
+# img = mpimg.imread("data/IMG/left_2016_12_01_13_30_48_287.jpg")
+# imgplot = plt.imshow(img)
+# plt.show()
+
+# cropped = img[61:140, :]
+# imgplot = plt.imshow(cropped)
+# plt.show()
+
+# img = mpimg.imread("data/IMG/right_2016_12_01_13_30_48_287.jpg")
+# imgplot = plt.imshow(img)
+# plt.show()
+
+# cropped = img[61:140, :]
+# imgplot = plt.imshow(cropped)
+# plt.show()
